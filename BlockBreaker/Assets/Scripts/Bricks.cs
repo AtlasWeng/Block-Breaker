@@ -7,6 +7,7 @@ public class Bricks : MonoBehaviour {
 	public Sprite[] hitSprite;
 	public AudioClip crack;
 	public static int breakableCount = 0;
+	public GameObject partical;
 
 	// private variables
 	private int timesHit;
@@ -53,10 +54,18 @@ public class Bricks : MonoBehaviour {
 		if (timesHit >= maxHits) {
 			Destroy (gameObject);
 			breakableCount --;
+			PuffSmoke();
 			levelManager.BrickDestroied();
 		} else {
 			LoadSprite();
 		}
+	}
+
+	void PuffSmoke ()
+	{
+		GameObject smokePuff = Instantiate(partical, gameObject.transform.position, Quaternion.identity);
+		ParticleSystem.MainModule main = smokePuff.GetComponent<ParticleSystem>().main;
+		main.startColor = gameObject.GetComponent<SpriteRenderer>().color;
 	}
 
 	void LoadSprite ()
